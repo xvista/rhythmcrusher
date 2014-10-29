@@ -5,4 +5,6 @@ public class GlobalConfiguration {
 	
 	public static int screenWidth = 854;
 	public static int screenHeight = 480;
+	
+	public static int[][] playerKey = new int[2][4];
 }
