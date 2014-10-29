@@ -1,4 +1,5 @@
 Thumbs.db
-/bin/config/
-/bin/logic/
-/bin/ui/
+desktop.ini
+bin/config/**
+bin/logic/**
+bin/ui/**
