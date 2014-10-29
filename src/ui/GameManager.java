@@ -9,7 +9,7 @@ public class GameManager {
 	
 	public static void runGame() {
 		sampleScene = new GameScene();
-		sampleScene.setBackground(Color.GRAY);
+		sampleScene.setBackground(Color.YELLOW);
 		gameWindow = new GameWindow(sampleScene);
 	}
 
