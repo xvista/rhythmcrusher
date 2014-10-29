@@ -1,1 +1,4 @@
 Thumbs.db
+bin/config/
+bin/logic/
+bin/ui/
