@@ -78,7 +78,7 @@ public class GameScene extends JPanel {
 		up.setOpaque(true);
 		add(up,BorderLayout.NORTH);
 		//---------------Button---------------------
-		FlowLayout flowLayOut=new FlowLayout(FlowLayout.CENTER,GlobalConfiguration.screenWidth/5,5);
+		FlowLayout flowLayOut=new FlowLayout(FlowLayout.CENTER,GlobalConfiguration.SCREEN_WIDTH/5,5);
 		JPanel down=new JPanel();
 		down.setBackground(Color.blue);
 		down.setOpaque(true);
