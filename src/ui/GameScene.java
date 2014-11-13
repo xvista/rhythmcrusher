@@ -22,7 +22,7 @@ public class GameScene extends JPanel {
 	}
 	
 	protected void applyResize() {
-		setPreferredSize(new Dimension(GlobalConfiguration.screenWidth, GlobalConfiguration.screenHeight));
+		setPreferredSize(new Dimension(GlobalConfiguration.SCREEN_WIDTH, GlobalConfiguration.SCREEN_HEIGHT));
 		validate();
 	}
 

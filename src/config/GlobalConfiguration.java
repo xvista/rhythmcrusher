@@ -3,8 +3,10 @@ package config;
 public class GlobalConfiguration {
 	public static final String GAME_NAME = "Rhythm Crusher";
 	
-	public static int screenWidth = 854;
-	public static int screenHeight = 480;
+	public static final int SCREEN_WIDTH = 854;
+	public static final int SCREEN_HEIGHT = 480;
 	
 	public static int[][] playerKey = new int[2][4];
+	
+	public static final String URL_BGM = "music/Infection.mp3";
 }
