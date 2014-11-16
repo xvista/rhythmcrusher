@@ -7,8 +7,11 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,77 +23,49 @@ import config.GlobalConfiguration;
 
 @SuppressWarnings("serial")
 public class GameScene extends JPanel {
-	JPanel optionPanel=new JPanel(new BorderLayout());
-	JButton newGame;
+	protected String start = "chooseStart.png";
+	protected String option = "option.png";
+	protected String exit = "exit.png";
+	
+	protected BufferedImage backGround;
+	protected BufferedImage startButton;
+	protected BufferedImage optionButton;
+	protected BufferedImage exitButton;
+	protected BufferedImage startS ;
+	protected BufferedImage optionS ;
 	
 	protected GameScene() {
 		super();
-		setLayout(new BorderLayout());
 		applyResize();
 		validate();
 		setDoubleBuffered(true);
 		addListener();
-		screenTitle();
-		
-		newGame.addMouseListener(new MouseListener() {
+	}
+	
+	protected void addListener() {
+		addKeyListener(new KeyListener() {
 			
 			@Override
-			public void mouseReleased(MouseEvent e) {
+			public void keyTyped(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				gameScreen();
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
+			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void keyPressed(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 		});
-		
-		
 	}
-	
-	private void addListener() {
-	}
-	protected void screenTitle(){
-		//---------------Label-----------------------
-		JLabel up=new JLabel("RhyThmCrusher",SwingConstants.CENTER);
-		up.setFont(new Font("Tahoma",Font.BOLD,30));
-		up.setBackground(Color.pink);
-		up.setOpaque(true);
-		add(up,BorderLayout.NORTH);
-		//---------------Button---------------------
-		FlowLayout flowLayOut=new FlowLayout(FlowLayout.CENTER,GlobalConfiguration.SCREEN_WIDTH/5,5);
-		JPanel down=new JPanel();
-		down.setBackground(Color.blue);
-		down.setOpaque(true);
-		add(down,BorderLayout.SOUTH);
-		down.setLayout(flowLayOut);
-		newGame=new JButton("New Game");
-		down.add(newGame);
-	}
-	
-	protected void gameScreen(){
-		this.removeAll();
-		this.setBackground(Color.RED);
+	public void close(){
+		GameManager.gameWindow.dispose();
 	}
 	
 	protected void applyResize() {
