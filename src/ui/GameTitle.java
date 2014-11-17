@@ -12,11 +12,12 @@ import javax.imageio.ImageIO;
 
 import config.GlobalConfiguration;
 
-public class GameTitle extends GameScene{
+public class GameTitle extends GameScene {
 
 	public GameTitle() {
 		super();
-		this.setPreferredSize(new Dimension(GlobalConfiguration.SCREEN_WIDTH, GlobalConfiguration.SCREEN_HEIGHT));
+		this.setPreferredSize(new Dimension(GlobalConfiguration.SCREEN_WIDTH,
+				GlobalConfiguration.SCREEN_HEIGHT));
 		// ===============addImage=====================
 		this.button();
 		setFocusable(true);
@@ -35,14 +36,15 @@ public class GameTitle extends GameScene{
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 				GlobalConfiguration.key = false;
-				
+
 			}
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				// TODO Auto-generated method stub
 
-				if (arg0.getKeyCode() == KeyEvent.VK_DOWN && !GlobalConfiguration.key) {
+				if (arg0.getKeyCode() == KeyEvent.VK_DOWN
+						&& !GlobalConfiguration.key) {
 					if (GlobalConfiguration.count == 3)
 						GlobalConfiguration.count = 0;
 					GlobalConfiguration.count++;
@@ -88,12 +90,12 @@ public class GameTitle extends GameScene{
 						&& !GlobalConfiguration.key) {
 					if (GlobalConfiguration.count == 1) {
 						GlobalConfiguration.countScreen = 2;
-						GameManager.sampleScene= new GamePlay();
+						GameManager.changeScreen();
 					} else if (GlobalConfiguration.count == 2) {
-						GlobalConfiguration.countScreen=3;
-						GameManager.sampleScene= new GamePlay();
+						GlobalConfiguration.countScreen = 3;
+						GameManager.changeScreen();
 					} else if (GlobalConfiguration.count == 3) {
-						close();
+						GameManager.close();
 					}
 				}
 
@@ -105,22 +107,18 @@ public class GameTitle extends GameScene{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (GlobalConfiguration.countScreen == 1) {
-			g.drawImage(backGround, 0, 0, null);
-			g.drawImage(startButton, 250, 230, null);
-			g.drawImage(optionButton, 250, 300, null);
-			g.drawImage(exitButton, 250, 370, null);
-			
-		} 		
-/*		if (GlobalConfiguration.countScreen == 2) {
-			g.clearRect(0, 0, GlobalConfiguration.SCREEN_WIDTH, GlobalConfiguration.SCREEN_HEIGHT);
-			System.out.println("hello1");
-			g.drawImage(startS,0, 0, null);
-		}else if (GlobalConfiguration.countScreen == 3) {
-			g.clearRect(0, 0, GlobalConfiguration.SCREEN_WIDTH, GlobalConfiguration.SCREEN_HEIGHT);
-			System.out.println("hello2");
-			g.drawImage(optionS,0, 0, null);
-		}*/
+		g.drawImage(backGround, 0, 0, null);
+		g.drawImage(startButton, 250, 230, null);
+		g.drawImage(optionButton, 250, 300, null);
+		g.drawImage(exitButton, 250, 370, null);
+		/*
+		  if (GlobalConfiguration.countScreen == 2) { g.clearRect(0, 0,
+		  GlobalConfiguration.SCREEN_WIDTH, GlobalConfiguration.SCREEN_HEIGHT);
+		  System.out.println("hello1"); g.drawImage(startS,0, 0, null); }else
+		  if (GlobalConfiguration.countScreen == 3) { g.clearRect(0, 0,
+		  GlobalConfiguration.SCREEN_WIDTH, GlobalConfiguration.SCREEN_HEIGHT);
+		  System.out.println("hello2"); g.drawImage(optionS,0, 0, null); }
+		*/ 
 
 	}
 
@@ -136,6 +134,5 @@ public class GameTitle extends GameScene{
 			// handle exception...
 		}
 	}
-
 
 }

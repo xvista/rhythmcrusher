@@ -3,14 +3,14 @@ package ui;
 import java.awt.Color;
 
 public class GameManager {
-	
-	public static GameWindow gameWindow;
-	public static GameScene sampleScene;
-	
+
+	private static GameWindow gameWindow;
+	private static GameScene sampleScene;
+
 	public static void runGame() {
-		//sampleScene = new GameScene();
-		//sampleScene.setBackground(Color.GREEN);
-		sampleScene=new GameTitle();
+		// sampleScene = new GameScene();
+		// sampleScene.setBackground(Color.GREEN);
+		sampleScene = new GameTitle();
 		gameWindow = new GameWindow(sampleScene);
 
 		while (true) {
@@ -21,9 +21,17 @@ public class GameManager {
 				e.printStackTrace();
 			}
 			sampleScene.repaint();
-			if(sampleScene instanceof GamePlay)
-				System.out.println("LoL");
+			if (sampleScene instanceof GamePlay)
+				System.out.println("GamePlay");
 		}
+	}
+
+	public static void changeScreen() {
+		sampleScene = new GamePlay();
+	}
+
+	public static void close() {
+		GameManager.gameWindow.dispose();
 	}
 
 }

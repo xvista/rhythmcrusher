@@ -64,9 +64,6 @@ public class GameScene extends JPanel {
 			}
 		});
 	}
-	public void close(){
-		GameManager.gameWindow.dispose();
-	}
 	
 	protected void applyResize() {
 		setPreferredSize(new Dimension(GlobalConfiguration.SCREEN_WIDTH, GlobalConfiguration.SCREEN_HEIGHT));
