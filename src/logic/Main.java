@@ -16,6 +16,7 @@ public class Main {
 		//AudioUtility.playMusic();
 		Simfile s = new Simfile("Infection");
 		System.out.println(s.getTitle());
+		System.out.println(s.getSubtitle());
 		System.out.println(s.getArtist());
 	}
 

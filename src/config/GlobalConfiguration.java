@@ -9,4 +9,6 @@ public class GlobalConfiguration {
 	public static int[][] playerKey = new int[2][4];
 	
 	public static final String URL_BGM = "music/Infection.mp3";
+	public static final String URL_RESOURCE_SIMFILES_DIR = "simfiles/";
+	public static final String URL_RESOURCE_IAMGES_DIR = "images/";
 }

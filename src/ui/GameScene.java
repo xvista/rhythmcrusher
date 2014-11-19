@@ -25,72 +25,36 @@ public class GameScene extends JPanel {
 	
 	protected GameScene() {
 		super();
-		setLayout(new BorderLayout());
 		applyResize();
 		validate();
 		setDoubleBuffered(true);
 		addListener();
-		screenTitle();
-		
-		newGame.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				gameScreen();
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		
 		
 	}
 	
 	private void addListener() {
 	}
-	protected void screenTitle(){
-		//---------------Label-----------------------
-		JLabel up=new JLabel("RhyThmCrusher",SwingConstants.CENTER);
-		up.setFont(new Font("Tahoma",Font.BOLD,30));
-		up.setBackground(Color.pink);
-		up.setOpaque(true);
-		add(up,BorderLayout.NORTH);
-		//---------------Button---------------------
-		FlowLayout flowLayOut=new FlowLayout(FlowLayout.CENTER,GlobalConfiguration.SCREEN_WIDTH/5,5);
-		JPanel down=new JPanel();
-		down.setBackground(Color.blue);
-		down.setOpaque(true);
-		add(down,BorderLayout.SOUTH);
-		down.setLayout(flowLayOut);
-		newGame=new JButton("New Game");
-		down.add(newGame);
-	}
 	
 	protected void gameScreen(){
 		this.removeAll();
 		this.setBackground(Color.RED);
+	}
+	
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponents(g);
+		Graphics2D g2 = (Graphics2D) g;		
+		
+		g2.setBackground(Color.BLACK);
+		
+		Dimension dim = getSize();
+		g2.clearRect(0, 0, (int)dim.getWidth(), (int)dim.getHeight());
+		
+		// reder all the objects
+		//for(IRenderableObject renderable : renderableHolder.getSortedRenderableObject()){
+		//	renderable.render(g2);
+		//}
 	}
 	
 	protected void applyResize() {
