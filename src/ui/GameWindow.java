@@ -1,12 +1,18 @@
 package ui;
 
 import config.GlobalConfiguration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class GameWindow extends JFrame {
 	
 	private GameScene currentScene;
+	public Media music;
+	public MediaPlayer musicPlayer;
+	public boolean isPlaying = false;
 	
 	protected GameWindow(GameScene scene) {
 		super(GlobalConfiguration.GAME_NAME);

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
@@ -29,19 +30,28 @@ public class Simfile {
 	private String title = "Unknown";
 	private String subtitle = null;
 	private String artist = "Unknown Artist";
+	/*
 	private File banner = null;
 	private File background = null;
 	private File music = null;
+	*/
+	private InputStream banner = null;
+	private String bannerName = null;
+	private InputStream background = null;
+	private String backgroundName = null;
+	private InputStream music = null;
+	private String musicName = null;
 	private double offset = 0;
 	private double sampleStart = 0;
+
 	private double sampleLength = 16;
 	private double[][] bpms;
 	private String[] notes = new String[5];
 	private int[] difficulty = {0, 0, 0, 0, 0};
 	
 	public Simfile(String simfileFolder) throws SimfileException, IOException {
-		/*folderPath = GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder + "/";
-		URL folder = Simfile.class.getClassLoader().getResource(GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder);
+		folderPath = GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder + "/";
+		/*URL folder = Simfile.class.getClassLoader().getResource(GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder);
 		if (folder == null) {
 		     throw new NoSimfileFolderException("Simfile folder '" + simfileFolder + "' not found");
 		}*/
@@ -69,6 +79,10 @@ public class Simfile {
 			e.printStackTrace();
 		}
 		
+		for (String file : fileList) {
+			System.out.println(file);
+		}
+		
 		if (fileList.size() == 0) {
 			throw new NoSimfileFolderException("Simfile folder '" + simfileFolder + "' not found");
 		}
@@ -82,12 +96,17 @@ public class Simfile {
 		}
 	    File[] fileList = dir.listFiles();*/
 	    for (String nextFile : fileList) {
-	    	if (FilenameUtils.getExtension(nextFile).equals("sm")) {
+	    	//if (FilenameUtils.getExtension(nextFile).equals("sm")) {
+	    	String[] fileSplit = nextFile.split("\\.");
+	    	for (int i = 0; i < fileSplit.length; i++) {
+	    		System.out.println(fileSplit[i]);
+	    	}
+	    	if (fileSplit.length != 0 && fileSplit[fileSplit.length - 1].equalsIgnoreCase("sm")) {
 	    		if (simfile != null) {
-	    			throw new SimfileCountException("Simfile folder '" + simfileFolder + "' must contains exactly 1 simfile");
+	    			throw new SimfileCountException("Simfile folder '" + simfileFolder + "' cannot have simfile more than 1 simfile");
 	    		}
 	    		//simfile = nextFile;
-	    		simfile = Simfile.class.getClassLoader().getResourceAsStream(GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder)
+	    		simfile = Simfile.class.getClassLoader().getResourceAsStream(GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder + "/" + nextFile);
 	    	}
 	    }
 	    
@@ -95,7 +114,9 @@ public class Simfile {
 			throw new SimfileCountException("Simfile folder '" + simfileFolder + "' must contains exactly 1 simfile");
 	    }
 	    
-	    BufferedReader br = new BufferedReader(new FileReader(simfile));
+	    InputStreamReader isr = new InputStreamReader(simfile);
+	    //BufferedReader br = new BufferedReader(new FileReader(simfile));
+	    BufferedReader br = new BufferedReader(isr);
 	    StringBuilder sb = new StringBuilder();
 	    String line = br.readLine();
 	    String readValue = null;
@@ -143,23 +164,31 @@ public class Simfile {
 		    		}
 		    	} else if (line.indexOf("#BANNER:") == 0) {
 		    		readValue = line.substring("#BANNER:".length(), line.length() - 1).trim();
-		    		for (File eachFile : fileList) {
+		    		/*for (File eachFile : fileList) {
 		    	    	if (eachFile.getName().equals(readValue)) {
 		    	    		banner = eachFile;
 		    	    		break;
 		    	    	}
-		    	    }
+		    	    }*/
+		    		if (fileList.contains(readValue)) {
+		    			banner = Simfile.class.getClassLoader().getResourceAsStream(GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder + "/" + readValue);
+		    			bannerName = readValue;
+		    		}
 		    		if (banner == null && !readValue.equals("")) {
 		    			throw new SimfileParsingException("Not found '" + readValue + "' in simfile directory");
 		    		}
 		    	} else if (line.indexOf("#BACKGROUND:") == 0) {
 		    		readValue = line.substring("#BACKGROUND:".length(), line.length() - 1).trim();
-		    		for (File eachFile : fileList) {
+		    		/*for (File eachFile : fileList) {
 		    	    	if (eachFile.getName().equals(readValue)) {
 		    	    		background = eachFile;
 		    	    		break;
 		    	    	}
-		    	    }
+		    	    }*/
+		    		if (fileList.contains(readValue)) {
+		    			background = Simfile.class.getClassLoader().getResourceAsStream(GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder + "/" + readValue);
+		    			backgroundName = readValue;
+		    		}
 		    		if (background == null && !readValue.equals("")) {
 		    			throw new SimfileParsingException("Not found '" + readValue + "' in simfile directory");
 		    		}
@@ -168,12 +197,16 @@ public class Simfile {
 		    		if (readValue.equals("")) {
 		    			throw new SimfileParsingException("Music property does not specified");
 		    		}
-		    		for (File eachFile : fileList) {
+		    		/*for (File eachFile : fileList) {
 		    	    	if (eachFile.getName().equals(readValue)) {
 		    	    		music = eachFile;
 		    	    		break;
 		    	    	}
-		    	    }
+		    	    }*/
+		    		if (fileList.contains(readValue)) {
+		    			music = Simfile.class.getClassLoader().getResourceAsStream(GlobalConfiguration.URL_RESOURCE_SIMFILES_DIR + simfileFolder + "/" + readValue);
+		    			musicName = readValue;
+		    		}
 		    		if (music == null) {
 		    			throw new SimfileParsingException("Not found '" + readValue + "' in simfile directory");
 		    		}
@@ -279,20 +312,44 @@ public class Simfile {
 		return artist;
 	}
 	
-	public File getMusic() {
+	public InputStream getMusic() {
 		return music;
+	}
+	
+	public String getMusicName() {
+		return musicName;
 	}
 	
 	public double getOffset() {
 		return offset;
 	}
 	
-	public File getBanner() {
+	public InputStream getBanner() {
 		return banner;
+	}
+	
+	public String getBannerName() {
+		return bannerName;
 	}
 	
 	public int[] getDifficulty() {
 		return difficulty;
+	}
+	
+	public InputStream getBackground() {
+		return background;
+	}
+	
+	public String getBackgroundName() {
+		return backgroundName;
+	}
+	
+	public double getSampleStart() {
+		return sampleStart;
+	}
+
+	public double getSampleLength() {
+		return sampleLength;
 	}
 	
 }

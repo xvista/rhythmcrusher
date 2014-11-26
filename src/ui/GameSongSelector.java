@@ -7,11 +7,15 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import config.GlobalConfiguration;
 import utility.DrawingUtility;
 import utility.InputUtility;
@@ -48,6 +52,8 @@ public class GameSongSelector extends GameScene {
 	public GameSongSelector() {
 		super();
 		
+		GameManager.gameWindow.isPlaying = false;
+		
 		int simfileIndex = 0;
 		for (int i = 0; i < 3; i++) {
 			simfileIndex--;
@@ -64,7 +70,7 @@ public class GameSongSelector extends GameScene {
 		}
 
 		currentSimfile = ResourceUtility.SIMFILES[simfilesShowOrder[3]];
-		previewBanner = new RenderObject(DrawingUtility.getImage(currentSimfile.getFolderPath() + currentSimfile.getBanner().getName()));
+		previewBanner = new RenderObject(DrawingUtility.getImage(currentSimfile.getFolderPath() + currentSimfile.getBannerName()));
 		updateDifficultyFlag();
 		
 		background.topLeftAnimationAt(0, 0);
@@ -88,6 +94,8 @@ public class GameSongSelector extends GameScene {
 		for (RenderObject eachScreenDifficulties : screenDifficulties) {
 			eachScreenDifficulties.topLeftAnimationAt(109, 289);
 		}
+		
+		musicPreview();
 	}
 
 	@Override
@@ -121,11 +129,12 @@ public class GameSongSelector extends GameScene {
 			textInfo.add(new TextInfo(ResourceUtility.SIMFILES[simfilesShowOrder[i]].getTitle(), listX[i], listY[i], ResourceUtility.FONT_HELVETICA_ROUND, 26, new Color(0x222644), listOpacity[i]));
 			textInfo.add(new TextInfo(ResourceUtility.SIMFILES[simfilesShowOrder[i]].getArtist(), listX[i], listY[i] + 18, ResourceUtility.FONT_HELVETICA_ROUND, 16, new Color(0x38385b), listOpacity[i]));
 		}
-		
-		if (InputUtility.getKeyTriggered(KeyEvent.VK_ESCAPE)) {
+		if (InputUtility.getKeyTriggered(KeyEvent.VK_ENTER)) {
+			GamePlay gamePlay = new GamePlay(currentSimfile, difficultySelected, this);
+			GameManager.gameWindow.switchScene(gamePlay);
+		} else if (InputUtility.getKeyTriggered(KeyEvent.VK_ESCAPE)) {
 			GameManager.gameWindow.switchScene(new GameTitle());
-		}
-		if (InputUtility.getKeyTriggered(KeyEvent.VK_UP)) {
+		} else if (InputUtility.getKeyTriggered(KeyEvent.VK_UP)) {
 			listRoll(KeyEvent.VK_UP);
 		} else if (InputUtility.getKeyTriggered(KeyEvent.VK_DOWN)) {
 			listRoll(KeyEvent.VK_DOWN);
@@ -172,9 +181,10 @@ public class GameSongSelector extends GameScene {
 			}
 		}
 		currentSimfile = ResourceUtility.SIMFILES[simfilesShowOrder[3]];
-		previewBanner = new RenderObject(DrawingUtility.getImage(currentSimfile.getFolderPath() + currentSimfile.getBanner().getName()));
+		previewBanner = new RenderObject(DrawingUtility.getImage(currentSimfile.getFolderPath() + currentSimfile.getBannerName()));
 		previewBanner.topLeftAnimationAt(39, 106);
 		updateDifficultyFlag();
+		musicPreview();
 	}
 	
 	private void difficultyRoll(int key) {
@@ -215,6 +225,22 @@ public class GameSongSelector extends GameScene {
 			difficultySelected = min;
 		}
 		screenDifficulty = screenDifficulties[difficultySelected];
+	}
+	
+	private void musicPreview() {
+		if (GameManager.gameWindow.musicPlayer != null) {
+			GameManager.gameWindow.musicPlayer.stop();
+		}
+		try {
+			GameManager.gameWindow.music = new Media(GamePlay.class.getResource("/" + currentSimfile.getFolderPath() + currentSimfile.getMusicName()).toURI().toString());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		GameManager.gameWindow.musicPlayer = new MediaPlayer(GameManager.gameWindow.music);
+		GameManager.gameWindow.musicPlayer.setStartTime(new Duration(currentSimfile.getSampleStart() * 1000));
+		GameManager.gameWindow.musicPlayer.setStopTime(new Duration((currentSimfile.getSampleStart() + currentSimfile.getSampleLength()) * 1000));
+		GameManager.gameWindow.musicPlayer.setCycleCount(Integer.MAX_VALUE);
+		GameManager.gameWindow.musicPlayer.play();
 	}
 	
 	private class TextInfo {

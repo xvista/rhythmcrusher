@@ -12,7 +12,7 @@ public class GlobalConfiguration {
 	
 	public static int[] playerKey = new int[4];
 	
-	public static final String URL_BGM = "musics/!.mp3";
+	public static final String URL_BGM = "musics/title-loop.mp3";
 	public static final String URL_RESOURCE_SIMFILES_DIR = "simfiles/";
 	public static final String URL_RESOURCE_IMAGES_DIR = "images/";
 	public static final String URL_RESOURCE_FONTS_DIR = "fonts/";

@@ -7,11 +7,15 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import javax.annotation.Resources;
 import javax.imageio.ImageIO;
@@ -45,7 +49,18 @@ public class GameTitle extends GameScene {
 		background.setZ(Integer.MIN_VALUE);
 		background.play();
 		
-		AudioUtility.playMusic();
+
+		if (GameManager.gameWindow.musicPlayer != null) {
+			GameManager.gameWindow.musicPlayer.stop();
+		}
+		try {
+			GameManager.gameWindow.music = new Media(GamePlay.class.getResource("/" + GlobalConfiguration.URL_BGM).toURI().toString());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		GameManager.gameWindow.musicPlayer = new MediaPlayer(GameManager.gameWindow.music);
+		GameManager.gameWindow.musicPlayer.setCycleCount(Integer.MAX_VALUE);
+		GameManager.gameWindow.musicPlayer.play();
 	}
 
 	@Override
