@@ -9,9 +9,13 @@ import config.GlobalConfiguration;
 
 public class DrawingUtility {
 	
-	private static BufferedImage getImageFromResource(String directory) {
+	public static BufferedImage getImageFromResource(String directory) {
+		return getImage(GlobalConfiguration.URL_RESOURCE_IMAGES_DIR + directory);
+	}
+	
+	public static BufferedImage getImage(String directory) {
 		try {
-			return ImageIO.read(DrawingUtility.class.getClassLoader().getResource(GlobalConfiguration.URL_RESOURCE_IAMGES_DIR + directory));
+			return ImageIO.read(DrawingUtility.class.getClassLoader().getResource(directory));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

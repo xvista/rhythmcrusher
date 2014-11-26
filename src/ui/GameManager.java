@@ -2,36 +2,62 @@ package ui;
 
 import java.awt.Color;
 
+import javafx.scene.media.MediaPlayer;
+
+import javax.swing.JPanel;
+
+import utility.InputUtility;
+import config.GlobalConfiguration;
+import logic.MainLogic;
+import logic.ResourceLoader;
+
 public class GameManager {
 
-	private static GameWindow gameWindow;
-	private static GameScene sampleScene;
+	public static GameWindow gameWindow;
+	private static GameScene nextScene = null;
+	
+	public MainLogic logic;
 
-	public static void runGame() {
-		// sampleScene = new GameScene();
-		// sampleScene.setBackground(Color.GREEN);
-		sampleScene = new GameTitle();
-		gameWindow = new GameWindow(sampleScene);
-
-		while (true) {
+	public static void runGame(MainLogic logic) {
+		gameWindow = new GameWindow(new GameLoadScreen());
+		//titleScene = new GameTitle();
+		//gameWindow.switchScene(titleScene);
+		
+		ResourceLoader loader = new ResourceLoader();
+		Thread loaderThread = new Thread(loader);
+		loaderThread.start();
+		try {
+			loaderThread.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (!loaderThread.isAlive()) {
+			System.out.println("Hell yeah");
+			gameWindow.switchScene(new GameTitle());
+		}
+		
+		while (true){
 			try {
-				Thread.sleep(10);
+				Thread.sleep(GlobalConfiguration.REFRESH_DELAY);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			sampleScene.repaint();
-			if (sampleScene instanceof GamePlay)
-				System.out.println("GamePlay");
+			gameWindow.getCurrentScene().repaint();
+			logic.logicUpdate();
+			gameWindow.getCurrentScene().update();
+			InputUtility.postUpdate();
+			if(nextScene != null){
+				gameWindow.switchScene(nextScene);
+				nextScene = null;
+			}
 		}
 	}
 
-	public static void changeScreen() {
-		sampleScene = new GamePlay();
-	}
-
 	public static void close() {
-		GameManager.gameWindow.dispose();
+		gameWindow.dispose();
+		System.exit(0);
 	}
 
 }

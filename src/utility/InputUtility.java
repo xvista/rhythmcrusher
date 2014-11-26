@@ -10,6 +10,7 @@ public class InputUtility {
 		}
 		return keyPressed[key];
 	}
+	
 	public static void setKeyPressed(int key, boolean pressed) {
 		if (key < 0 || key > 255) {
 			return;
@@ -23,10 +24,18 @@ public class InputUtility {
 		}
 		return keyTriggered[key];
 	}
+	
 	public static void setKeyTriggered(int key, boolean pressed) {
 		if (key < 0 || key > 255) {
 			return;
 		}
 		keyTriggered[key] = pressed;
 	}
+	
+	public static void postUpdate() {
+		for (int i = 0; i < keyTriggered.length; i++) {
+			setKeyTriggered(i, false);
+		}
+	}
+	
 }
